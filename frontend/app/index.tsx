@@ -24,7 +24,7 @@ interface LocationStat {
   sub_locations: Array<Record<string, number>>;
 }
 
-const API_BASE_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+const API_BASE_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
 export default function HomeScreen() {
   const [locations, setLocations] = useState<LocationStat[]>([]);
