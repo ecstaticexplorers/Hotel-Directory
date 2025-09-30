@@ -398,6 +398,11 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
+    elevation: 8,
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
   headerTitle: {
     fontSize: 28,
@@ -419,11 +424,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 25,
-    elevation: 2,
+    elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
   },
   searchIcon: {
     marginRight: 12,
@@ -445,114 +450,75 @@ const styles = StyleSheet.create({
     color: '#666',
     fontWeight: '500',
   },
-  propertyCard: {
+  listContainer: {
+    paddingHorizontal: 16,
+  },
+  locationCard: {
+    position: 'relative',
     backgroundColor: 'white',
-    marginHorizontal: 16,
-    marginVertical: 8,
     borderRadius: 16,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    marginVertical: 8,
     overflow: 'hidden',
   },
-  imageContainer: {
-    position: 'relative',
+  locationCardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+    zIndex: 1,
   },
-  propertyImage: {
-    width: '100%',
-    height: 200,
-    backgroundColor: '#f0f0f0',
-  },
-  categoryBadge: {
+  cardShadow: {
     position: 'absolute',
-    top: 12,
-    right: 12,
-    backgroundColor: 'rgba(0, 122, 255, 0.9)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    top: 4,
+    left: 4,
+    right: -4,
+    bottom: -4,
+    backgroundColor: 'rgba(0, 122, 255, 0.1)',
     borderRadius: 16,
+    zIndex: -1,
   },
-  categoryText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: '600',
+  locationIcon: {
+    width: 60,
+    height: 60,
+    backgroundColor: '#e3f2fd',
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+    elevation: 2,
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
-  propertyInfo: {
-    padding: 16,
+  locationInfo: {
+    flex: 1,
   },
-  propertyName: {
-    fontSize: 18,
+  locationName: {
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
   },
-  locationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  locationText: {
-    fontSize: 14,
-    color: '#666',
-    marginLeft: 4,
-    flex: 1,
-  },
-  ratingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  starsContainer: {
-    flexDirection: 'row',
-    marginRight: 8,
-  },
-  ratingText: {
-    fontSize: 14,
-    color: '#666',
-    fontWeight: '500',
-  },
-  amenitiesText: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
-    lineHeight: 20,
-  },
-  tariffText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007AFF',
-    marginBottom: 16,
-  },
-  actionButtons: {
+  statsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  actionButton: {
-    flex: 1,
+  statItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    borderRadius: 8,
-    marginHorizontal: 4,
+    flex: 1,
   },
-  callButton: {
-    backgroundColor: '#34C759',
-  },
-  whatsappButton: {
-    backgroundColor: '#25D366',
-  },
-  mapButton: {
-    backgroundColor: '#FF9500',
-  },
-  actionButtonText: {
-    color: 'white',
-    fontWeight: '600',
-    marginLeft: 6,
+  statText: {
     fontSize: 14,
+    color: '#666',
+    marginLeft: 6,
+    fontWeight: '500',
+  },
+  arrowContainer: {
+    padding: 4,
+  },
+  separator: {
+    height: 4,
   },
   centerContainer: {
     flex: 1,
@@ -581,16 +547,15 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     marginTop: 16,
+    elevation: 4,
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
   },
   retryButtonText: {
     color: 'white',
     fontWeight: '600',
     fontSize: 16,
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 20,
   },
 });
