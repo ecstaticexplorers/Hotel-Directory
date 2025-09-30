@@ -68,27 +68,18 @@ export default function LocationDetailScreen() {
 
   const fetchLocationData = useCallback(async () => {
     try {
-      setLoading(true);
       const response = await fetch(`${API_BASE_URL}/api/locations`);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       
       const locations = await response.json();
-      console.log('Locations data:', locations);
-      
       const currentLocation = locations.find((loc: any) => 
         loc.location.toLowerCase() === locationName?.toLowerCase()
       );
       
-      console.log('Current location found:', currentLocation);
-      
       if (currentLocation) {
         const subLocs: SubLocation[] = [];
-        console.log('Sub locations raw:', currentLocation.sub_locations);
-        
         for (const subLocObj of currentLocation.sub_locations) {
-          console.log('Processing sub location object:', subLocObj);
           for (const [name, count] of Object.entries(subLocObj)) {
-            console.log('Adding sub location:', name, count);
             subLocs.push({
               name: name as string,
               count: count as number,
@@ -98,13 +89,10 @@ export default function LocationDetailScreen() {
         }
         // Sort by count descending
         subLocs.sort((a, b) => b.count - a.count);
-        console.log('Final sub locations:', subLocs);
         setSubLocations(subLocs);
       }
     } catch (error) {
       console.error('Error fetching location data:', error);
-    } finally {
-      setLoading(false);
     }
   }, [locationName]);
 
@@ -118,27 +106,17 @@ export default function LocationDetailScreen() {
         page: pageNum.toString(),
         per_page: '10',
         location: locationName || '',
-        sort_by: 'reviews_desc', // Number of reviews first, then rating
+        sort_by: 'reviews_desc',
         ...(subLocation && { sub_location: subLocation })
       });
 
-      const apiUrl = `${API_BASE_URL}/api/properties?${params}`;
-      console.log('=== FETCHING PROPERTIES ===');
-      console.log('API URL:', apiUrl);
-
-      const response = await fetch(apiUrl);
-      console.log('Response status:', response.status);
+      const response = await fetch(`${API_BASE_URL}/api/properties?${params}`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data: APIResponse = await response.json();
-      console.log('Properties response:', {
-        total: data.total,
-        propertiesCount: data.properties.length,
-        firstProperty: data.properties[0]?.homestay_name
-      });
       
       if (pageNum === 1) {
         setProperties(data.properties);
@@ -150,7 +128,7 @@ export default function LocationDetailScreen() {
       setHasMore(pageNum < data.total_pages);
       
     } catch (error) {
-      console.error('ERROR fetching properties:', error);
+      console.error('Error fetching properties:', error);
       Alert.alert('Error', 'Failed to load properties. Please try again.');
     } finally {
       setLoading(false);
