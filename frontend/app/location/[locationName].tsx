@@ -113,13 +113,21 @@ export default function LocationDetailScreen() {
         ...(subLocation && { sub_location: subLocation })
       });
 
-      const response = await fetch(`${API_BASE_URL}/api/properties?${params}`);
+      const apiUrl = `${API_BASE_URL}/api/properties?${params}`;
+      console.log('Fetching properties from:', apiUrl);
+      console.log('Location name:', locationName);
+      console.log('Sub location:', subLocation);
+
+      const response = await fetch(apiUrl);
+      
+      console.log('Response status:', response.status);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data: APIResponse = await response.json();
+      console.log('Properties data received:', data);
       
       if (pageNum === 1) {
         setProperties(data.properties);
