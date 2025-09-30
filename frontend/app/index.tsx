@@ -362,21 +362,13 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   treeSeparator: {
-    height: 8,
+    height: 1,
   },
   locationTreeNode: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    marginVertical: 4,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    overflow: 'hidden',
+    // Remove all card-like styling - no background, no borders, no shadows
   },
   mainLocationNode: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 0,
     paddingVertical: 12,
   },
   locationNodeContent: {
@@ -390,30 +382,28 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   locationNodeName: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '600',
     color: '#333',
     marginBottom: 2,
   },
   locationNodeStats: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#666',
   },
   subLocationsList: {
-    borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
-    backgroundColor: '#fafafa',
+    marginLeft: 24,
+    paddingTop: 8,
   },
   subLocationNode: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
-    paddingLeft: 32,
-    paddingRight: 16,
+    paddingVertical: 6,
+    paddingLeft: 8,
   },
   subLocationLine: {
     position: 'absolute',
-    left: 20,
+    left: -12,
     top: 0,
     bottom: 0,
     width: 1,
@@ -432,9 +422,8 @@ const styles = StyleSheet.create({
     color: '#555',
   },
   showMoreButton: {
-    paddingVertical: 10,
-    paddingLeft: 32,
-    paddingRight: 16,
+    paddingVertical: 8,
+    paddingLeft: 8,
   },
   showMoreText: {
     fontSize: 14,
