@@ -651,6 +651,49 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 12,
   },
+  mainLocationNode: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginVertical: 2,
+    borderRadius: 6,
+    backgroundColor: '#f8f9fa',
+  },
+  mainLocationText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#333',
+    flex: 1,
+  },
+  subLocationNodes: {
+    marginLeft: 16,
+    paddingLeft: 12,
+    borderLeftWidth: 1,
+    borderLeftColor: '#e9ecef',
+  },
+  subLocationNode: {
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    marginVertical: 1,
+    borderRadius: 4,
+  },
+  selectedSubLocation: {
+    backgroundColor: '#e8f5e8',
+  },
+  subLocationNodeText: {
+    fontSize: 13,
+    color: '#666',
+  },
+  selectedSubLocationText: {
+    color: '#4CAF50',
+    fontWeight: '500',
+  },
+  showMoreNode: {
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+  },
   filterOption: {
     paddingVertical: 8,
     paddingHorizontal: 12,
