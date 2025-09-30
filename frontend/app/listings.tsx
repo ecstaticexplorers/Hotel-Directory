@@ -277,68 +277,70 @@ export default function ListingScreen() {
       
       {expandedSections.location && (
         <View style={styles.filterOptions}>
-          {console.log('Rendering locations:', locations.length)}
-          {locations.map((loc) => (
-            <View key={loc.location}>
-              {console.log('Rendering location:', loc.location, 'with', loc.sub_locations.length, 'sub-locations')}
-              {/* Main Location Node */}
-              <TouchableOpacity
-                style={styles.mainLocationNode}
-                onPress={() => {
-                  const key = `location_${loc.location}`;
-                  setExpandedSections(prev => ({
-                    ...prev,
-                    [key]: !prev[key]
-                  }));
-                }}
-              >
-                <Text style={styles.mainLocationText}>
-                  {loc.location} & Offbeat ({loc.count})
-                </Text>
-                <Ionicons
-                  name={expandedSections[`location_${loc.location}`] ? "chevron-up" : "chevron-down"}
-                  size={16}
-                  color="#666"
-                />
-              </TouchableOpacity>
-              
-              {/* Sub-locations (Second level nodes) */}
-              {expandedSections[`location_${loc.location}`] && (
-                <View style={styles.subLocationNodes}>
-                  {loc.sub_locations.map((subLocObj, index) => {
-                    const [name, count] = Object.entries(subLocObj)[0];
-                    return (
-                      <TouchableOpacity
-                        key={`${name}-${index}`}
-                        style={[
-                          styles.subLocationNode,
-                          filters.location === loc.location && filters.sub_location === name && styles.selectedSubLocation
-                        ]}
-                        onPress={() => {
-                          handleFilterChange('location', loc.location);
-                          handleFilterChange('sub_location', 
-                            filters.location === loc.location && filters.sub_location === name ? '' : name
-                          );
-                        }}
-                      >
-                        <Text style={[
-                          styles.subLocationNodeText,
-                          filters.location === loc.location && filters.sub_location === name && styles.selectedSubLocationText
-                        ]}>
-                          {name}({count})
-                        </Text>
+          {locations.length === 0 ? (
+            <Text style={styles.emptyText}>Loading locations...</Text>
+          ) : (
+            locations.map((loc) => (
+              <View key={loc.location}>
+                {/* Main Location Node */}
+                <TouchableOpacity
+                  style={styles.mainLocationNode}
+                  onPress={() => {
+                    const key = `location_${loc.location}`;
+                    setExpandedSections(prev => ({
+                      ...prev,
+                      [key]: !prev[key]
+                    }));
+                  }}
+                >
+                  <Text style={styles.mainLocationText}>
+                    {loc.location} & Offbeat ({loc.count})
+                  </Text>
+                  <Ionicons
+                    name={expandedSections[`location_${loc.location}`] ? "chevron-up" : "chevron-down"}
+                    size={16}
+                    color="#666"
+                  />
+                </TouchableOpacity>
+                
+                {/* Sub-locations (Second level nodes) */}
+                {expandedSections[`location_${loc.location}`] && (
+                  <View style={styles.subLocationNodes}>
+                    {loc.sub_locations.map((subLocObj, index) => {
+                      const [name, count] = Object.entries(subLocObj)[0];
+                      return (
+                        <TouchableOpacity
+                          key={`${name}-${index}`}
+                          style={[
+                            styles.subLocationNode,
+                            filters.location === loc.location && filters.sub_location === name && styles.selectedSubLocation
+                          ]}
+                          onPress={() => {
+                            handleFilterChange('location', loc.location);
+                            handleFilterChange('sub_location', 
+                              filters.location === loc.location && filters.sub_location === name ? '' : name
+                            );
+                          }}
+                        >
+                          <Text style={[
+                            styles.subLocationNodeText,
+                            filters.location === loc.location && filters.sub_location === name && styles.selectedSubLocationText
+                          ]}>
+                            {name}({count})
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    })}
+                    {loc.sub_locations.length > 6 && (
+                      <TouchableOpacity style={styles.showMoreNode}>
+                        <Text style={styles.showMoreText}>Show More</Text>
                       </TouchableOpacity>
-                    );
-                  })}
-                  {loc.sub_locations.length > 6 && (
-                    <TouchableOpacity style={styles.showMoreNode}>
-                      <Text style={styles.showMoreText}>Show More</Text>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              )}
-            </View>
-          ))}
+                    )}
+                  </View>
+                )}
+              </View>
+            ))
+          )}
         </View>
       )}
 
