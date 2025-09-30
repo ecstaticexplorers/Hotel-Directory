@@ -182,6 +182,18 @@ export default function HomeScreen() {
         )}
       </View>
 
+      {/* View All Properties Button */}
+      <View style={styles.viewAllContainer}>
+        <TouchableOpacity
+          style={styles.viewAllButton}
+          onPress={() => router.push('/listings')}
+        >
+          <Ionicons name="grid-outline" size={20} color="white" />
+          <Text style={styles.viewAllButtonText}>View All Properties</Text>
+          <Ionicons name="arrow-forward" size={20} color="white" />
+        </TouchableOpacity>
+      </View>
+
       {/* Results Count */}
       {!loading && filteredLocations.length > 0 && (
         <View style={styles.resultsContainer}>
