@@ -141,7 +141,7 @@ export default function HomeScreen() {
                 <TouchableOpacity
                   key={`${name}-${index}`}
                   style={styles.subLocationNode}
-                  onPress={() => handleLocationPress(item.location)}
+                  onPress={() => handleSubLocationPress(item.location, name)}
                   activeOpacity={0.7}
                 >
                   <View style={styles.subLocationLine} />
