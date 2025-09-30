@@ -87,8 +87,8 @@ export default function HomeScreen() {
     }));
   };
 
-  const handleLocationPress = (locationName: string) => {
-    router.push(`/location/${encodeURIComponent(locationName)}`);
+  const handleSubLocationPress = (locationName: string, subLocationName: string) => {
+    router.push(`/listings?location=${encodeURIComponent(locationName)}&sub_location=${encodeURIComponent(subLocationName)}`);
   };
 
   const getSubLocationCount = (subLocations: Array<Record<string, number>>) => {
