@@ -600,6 +600,9 @@ const styles = StyleSheet.create({
     borderRightColor: '#e9ecef',
     maxHeight: '100%',
   },
+  sidebarHidden: {
+    display: 'none',
+  },
   filtersContainer: {
     padding: 16,
   },
