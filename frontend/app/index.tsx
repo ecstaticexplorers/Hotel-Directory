@@ -280,6 +280,30 @@ const styles = StyleSheet.create({
   clearButton: {
     marginLeft: 8,
   },
+  viewAllContainer: {
+    paddingHorizontal: 16,
+    marginBottom: 8,
+  },
+  viewAllButton: {
+    backgroundColor: '#4CAF50',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    elevation: 4,
+    shadowColor: '#4CAF50',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  viewAllButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+    marginHorizontal: 12,
+  },
   resultsContainer: {
     paddingHorizontal: 20,
     paddingBottom: 8,
