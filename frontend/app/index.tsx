@@ -91,6 +91,10 @@ export default function HomeScreen() {
     router.push(`/listings?location=${encodeURIComponent(locationName)}&sub_location=${encodeURIComponent(subLocationName)}`);
   };
 
+  const handleLocationPress = (locationName: string) => {
+    router.push(`/location/${encodeURIComponent(locationName)}`);
+  };
+
   const getSubLocationCount = (subLocations: Array<Record<string, number>>) => {
     return subLocations.length;
   };
