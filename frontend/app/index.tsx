@@ -95,45 +95,79 @@ export default function HomeScreen() {
     return subLocations.length;
   };
 
-  const renderLocationCard = ({ item }: { item: LocationStat }) => {
+  const renderLocationTree = ({ item }: { item: LocationStat }) => {
     const subLocationCount = getSubLocationCount(item.sub_locations);
+    const isExpanded = expandedLocations[item.location];
     
     return (
-      <TouchableOpacity
-        style={styles.locationCard}
-        onPress={() => handleLocationPress(item.location)}
-        activeOpacity={0.8}
-      >
-        <View style={styles.locationCardContent}>
-          <View style={styles.locationIcon}>
-            <Ionicons name="location" size={32} color="#007AFF" />
-          </View>
-          
-          <View style={styles.locationInfo}>
-            <Text style={styles.locationName}>{item.location}</Text>
-            <View style={styles.statsRow}>
-              <View style={styles.statItem}>
-                <Ionicons name="business-outline" size={16} color="#666" />
-                <Text style={styles.statText}>
-                  {subLocationCount} area{subLocationCount !== 1 ? 's' : ''}
-                </Text>
-              </View>
-              <View style={styles.statItem}>
-                <Ionicons name="home-outline" size={16} color="#666" />
-                <Text style={styles.statText}>
-                  {item.count} propert{item.count !== 1 ? 'ies' : 'y'}
-                </Text>
-              </View>
+      <View style={styles.locationTreeNode}>
+        {/* Main Location Node */}
+        <TouchableOpacity
+          style={styles.mainLocationNode}
+          onPress={() => toggleLocationExpansion(item.location)}
+          activeOpacity={0.8}
+        >
+          <View style={styles.locationNodeContent}>
+            <Ionicons 
+              name="location" 
+              size={20} 
+              color="#007AFF" 
+              style={styles.locationNodeIcon}
+            />
+            <View style={styles.locationNodeInfo}>
+              <Text style={styles.locationNodeName}>{item.location}</Text>
+              <Text style={styles.locationNodeStats}>
+                {subLocationCount} area{subLocationCount !== 1 ? 's' : ''} • {item.count} propert{item.count !== 1 ? 'ies' : 'y'}
+              </Text>
             </View>
+            <Ionicons
+              name={isExpanded ? "chevron-up" : "chevron-down"}
+              size={20}
+              color="#666"
+            />
           </View>
-          
-          <View style={styles.arrowContainer}>
-            <Ionicons name="chevron-forward" size={24} color="#007AFF" />
-          </View>
-        </View>
+        </TouchableOpacity>
         
-        <View style={styles.cardShadow} />
-      </TouchableOpacity>
+        {/* Sub-locations (Second level) */}
+        {isExpanded && (
+          <View style={styles.subLocationsList}>
+            {item.sub_locations.map((subLocObj, index) => {
+              const [name, count] = Object.entries(subLocObj)[0];
+              return (
+                <TouchableOpacity
+                  key={`${name}-${index}`}
+                  style={styles.subLocationNode}
+                  onPress={() => handleLocationPress(item.location)}
+                  activeOpacity={0.7}
+                >
+                  <View style={styles.subLocationLine} />
+                  <View style={styles.subLocationContent}>
+                    <Ionicons 
+                      name="business-outline" 
+                      size={16} 
+                      color="#999" 
+                      style={styles.subLocationIcon}
+                    />
+                    <Text style={styles.subLocationName}>
+                      {name} ({count})
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+            {item.sub_locations.length > 8 && (
+              <TouchableOpacity
+                style={styles.showMoreButton}
+                onPress={() => handleLocationPress(item.location)}
+              >
+                <Text style={styles.showMoreText}>
+                  View all {item.sub_locations.length} areas →
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+      </View>
     );
   };
 
