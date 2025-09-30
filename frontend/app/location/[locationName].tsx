@@ -73,14 +73,22 @@ export default function LocationDetailScreen() {
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       
       const locations = await response.json();
+      console.log('Locations data:', locations);
+      
       const currentLocation = locations.find((loc: any) => 
         loc.location.toLowerCase() === locationName?.toLowerCase()
       );
       
+      console.log('Current location found:', currentLocation);
+      
       if (currentLocation) {
         const subLocs: SubLocation[] = [];
+        console.log('Sub locations raw:', currentLocation.sub_locations);
+        
         for (const subLocObj of currentLocation.sub_locations) {
+          console.log('Processing sub location object:', subLocObj);
           for (const [name, count] of Object.entries(subLocObj)) {
+            console.log('Adding sub location:', name, count);
             subLocs.push({
               name: name as string,
               count: count as number,
@@ -90,6 +98,7 @@ export default function LocationDetailScreen() {
         }
         // Sort by count descending
         subLocs.sort((a, b) => b.count - a.count);
+        console.log('Final sub locations:', subLocs);
         setSubLocations(subLocs);
       }
     } catch (error) {
