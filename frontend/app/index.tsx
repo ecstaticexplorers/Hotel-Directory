@@ -31,8 +31,12 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filteredLocations, setFilteredLocations] = useState<LocationStat[]>([]);
+  
   // Expanded tree sections
   const [expandedLocations, setExpandedLocations] = useState<{[key: string]: boolean}>({});
+  
+  const router = useRouter();
 
   const fetchLocations = useCallback(async (isRefresh = false) => {
     try {
