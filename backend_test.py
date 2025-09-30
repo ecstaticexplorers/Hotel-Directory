@@ -471,6 +471,34 @@ class StayHuntAPITester:
                 
         except Exception as e:
             self.log_test("Properties Reviews Sort - Exception", False, f"Error: {str(e)}")
+            
+    def test_search_suggestions_endpoint(self):
+        """Test search suggestions endpoint"""
+        try:
+            start_time = time.time()
+            response = self.session.get(f"{self.base_url}/search-suggestions?query=goa")
+            response_time = time.time() - start_time
+            
+            if response.status_code == 200:
+                suggestions = response.json()
+                
+                if isinstance(suggestions, list):
+                    if suggestions:
+                        # Check suggestion structure
+                        first_suggestion = suggestions[0]
+                        if "text" in first_suggestion and "type" in first_suggestion:
+                            self.log_test("Search Suggestions", True, f"Retrieved {len(suggestions)} search suggestions", response_time)
+                        else:
+                            self.log_test("Search Suggestions", False, "Suggestion data missing required fields", response_time)
+                    else:
+                        self.log_test("Search Suggestions", False, "No suggestions returned for 'goa'", response_time)
+                else:
+                    self.log_test("Search Suggestions", False, "Invalid response format", response_time)
+            else:
+                self.log_test("Search Suggestions", False, f"HTTP {response.status_code}", response_time)
+                
+        except Exception as e:
+            self.log_test("Search Suggestions", False, f"Error: {str(e)}")
         """Test search suggestions endpoint"""
         try:
             start_time = time.time()
