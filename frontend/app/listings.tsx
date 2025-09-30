@@ -711,27 +711,6 @@ const styles = StyleSheet.create({
     color: '#4CAF50',
     fontWeight: '500',
   },
-  subLocationContainer: {
-    marginLeft: 16,
-    marginTop: 4,
-  },
-  subLocationOption: {
-    paddingVertical: 6,
-    paddingHorizontal: 8,
-    marginVertical: 1,
-    borderRadius: 4,
-  },
-  subLocationText: {
-    fontSize: 13,
-    color: '#777',
-  },
-  showMoreText: {
-    fontSize: 13,
-    color: '#4CAF50',
-    fontWeight: '500',
-    paddingVertical: 6,
-    paddingHorizontal: 8,
-  },
   listContainer: {
     flex: 1,
     backgroundColor: 'white',
