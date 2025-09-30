@@ -500,15 +500,16 @@ export default function ListingScreen() {
       </View>
 
       <View style={styles.mainContent}>
-        {/* Desktop: Always show filters | Mobile: Toggle filters */}
-        {(showFilters || width > 768) && (
-          <ScrollView 
-            style={styles.sidebar}
-            showsVerticalScrollIndicator={false}
-          >
-            {renderFilterSection()}
-          </ScrollView>
-        )}
+        {/* Sidebar - Always show on desktop, toggle on mobile */}
+        <ScrollView 
+          style={[
+            styles.sidebar,
+            width <= 768 && !showFilters && styles.sidebarHidden
+          ]}
+          showsVerticalScrollIndicator={false}
+        >
+          {renderFilterSection()}
+        </ScrollView>
 
         {/* Properties List */}
         <View style={styles.listContainer}>
