@@ -35,16 +35,17 @@ class StayHuntAPITester:
         """Test basic API health"""
         try:
             start_time = time.time()
-            response = self.session.get(f"{self.base_url.replace('/api', '')}/")
+            # Test the properties endpoint directly since root might return HTML
+            response = self.session.get(f"{self.base_url}/properties?per_page=1")
             response_time = time.time() - start_time
             
             if response.status_code == 200:
                 data = response.json()
-                if "StayHunt API is running" in data.get("message", ""):
+                if "properties" in data and "total" in data:
                     self.log_test("API Health Check", True, "API is running correctly", response_time)
                     return True
                 else:
-                    self.log_test("API Health Check", False, f"Unexpected response: {data}", response_time)
+                    self.log_test("API Health Check", False, f"Unexpected response structure: {list(data.keys())}", response_time)
             else:
                 self.log_test("API Health Check", False, f"HTTP {response.status_code}: {response.text}", response_time)
         except Exception as e:
