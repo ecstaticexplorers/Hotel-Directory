@@ -196,9 +196,19 @@ async def get_locations():
                             "input": "$sub_locations",
                             "as": "sub",
                             "in": {
-                                "$$sub.sub_location": "$$sub.count"
+                                "k": "$$sub.sub_location",
+                                "v": "$$sub.count"
                             }
                         }
+                    }
+                }
+            },
+            {
+                "$project": {
+                    "location": 1,
+                    "count": 1,
+                    "sub_locations": {
+                        "$arrayToObject": "$sub_locations"
                     }
                 }
             },
