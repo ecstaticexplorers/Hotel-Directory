@@ -80,6 +80,13 @@ export default function HomeScreen() {
     fetchLocations(true);
   };
 
+  const toggleLocationExpansion = (locationName: string) => {
+    setExpandedLocations(prev => ({
+      ...prev,
+      [locationName]: !prev[locationName]
+    }));
+  };
+
   const handleLocationPress = (locationName: string) => {
     router.push(`/location/${encodeURIComponent(locationName)}`);
   };
