@@ -299,31 +299,83 @@ class StayHuntAPITester:
             self.log_test("Individual Property Endpoint", False, f"Error: {str(e)}")
             
     def test_locations_endpoint(self):
-        """Test locations statistics endpoint"""
+        """Test locations statistics endpoint - UPDATED FOR SPECIFIC TESTING"""
+        print("\n🎯 DETAILED LOCATIONS ENDPOINT TESTING (PRIMARY FOCUS)")
         try:
             start_time = time.time()
             response = self.session.get(f"{self.base_url}/locations")
             response_time = time.time() - start_time
             
             if response.status_code == 200:
-                locations = response.json()
+                self.log_test("Locations Endpoint - Status Code", True, "Returns 200 OK", response_time)
                 
-                if isinstance(locations, list) and locations:
-                    first_location = locations[0]
-                    required_fields = ["location", "count", "sub_locations"]
+                try:
+                    locations = response.json()
+                except json.JSONDecodeError as e:
+                    self.log_test("Locations Endpoint - JSON Parse", False, f"Invalid JSON: {str(e)}", response_time)
+                    return False
+                
+                self.log_test("Locations Endpoint - JSON Parse", True, "Valid JSON response", response_time)
+                
+                if isinstance(locations, list):
+                    self.log_test("Locations Endpoint - Response Type", True, f"Returns list with {len(locations)} locations", response_time)
                     
-                    if all(field in first_location for field in required_fields):
+                    if locations:
+                        first_location = locations[0]
+                        required_fields = ["location", "count", "sub_locations"]
+                        
+                        # Test LocationStats structure
+                        missing_fields = [field for field in required_fields if field not in first_location]
+                        if missing_fields:
+                            self.log_test("Locations Endpoint - LocationStats Structure", False, f"Missing fields: {missing_fields}", response_time)
+                            return False
+                        else:
+                            self.log_test("Locations Endpoint - LocationStats Structure", True, "All required fields present", response_time)
+                        
+                        # Test sub_locations structure
+                        sub_locations = first_location.get("sub_locations", [])
+                        if isinstance(sub_locations, list):
+                            self.log_test("Locations Endpoint - Sub-locations Type", True, f"sub_locations is list with {len(sub_locations)} items", response_time)
+                            
+                            # Test sub_locations format
+                            if sub_locations:
+                                sample_sub = sub_locations[0]
+                                if isinstance(sample_sub, dict) and len(sample_sub) == 1:
+                                    sub_name = list(sample_sub.keys())[0]
+                                    sub_count = sample_sub[sub_name]
+                                    if isinstance(sub_count, int):
+                                        self.log_test("Locations Endpoint - Sub-location Format", True, f"Correct format: {sub_name}: {sub_count}", response_time)
+                                    else:
+                                        self.log_test("Locations Endpoint - Sub-location Format", False, f"Count should be int, got {type(sub_count)}", response_time)
+                                else:
+                                    self.log_test("Locations Endpoint - Sub-location Format", False, f"Invalid sub-location structure: {sample_sub}", response_time)
+                            else:
+                                self.log_test("Locations Endpoint - Sub-location Format", True, "No sub-locations to validate", response_time)
+                        else:
+                            self.log_test("Locations Endpoint - Sub-locations Type", False, f"sub_locations should be list, got {type(sub_locations)}", response_time)
+                        
+                        # Print sample data for verification
+                        print(f"\n📊 SAMPLE LOCATION DATA:")
+                        print(f"Location: {first_location.get('location')}")
+                        print(f"Count: {first_location.get('count')}")
+                        print(f"Sub-locations sample: {sub_locations[:3] if len(sub_locations) > 3 else sub_locations}")
+                        
                         total_count = sum(loc.get("count", 0) for loc in locations)
-                        self.log_test("Locations Endpoint", True, f"Retrieved {len(locations)} locations with {total_count} total properties", response_time)
+                        self.log_test("Locations Endpoint - Overall", True, f"Retrieved {len(locations)} locations with {total_count} total properties", response_time)
+                        return True
                     else:
-                        self.log_test("Locations Endpoint", False, "Location data missing required fields", response_time)
+                        self.log_test("Locations Endpoint - Data Availability", False, "No location data returned", response_time)
+                        return False
                 else:
-                    self.log_test("Locations Endpoint", False, "No location data returned", response_time)
+                    self.log_test("Locations Endpoint - Response Type", False, f"Expected list, got {type(locations)}", response_time)
+                    return False
             else:
-                self.log_test("Locations Endpoint", False, f"HTTP {response.status_code}", response_time)
+                self.log_test("Locations Endpoint - Status Code", False, f"HTTP {response.status_code}: {response.text[:200]}", response_time)
+                return False
                 
         except Exception as e:
-            self.log_test("Locations Endpoint", False, f"Error: {str(e)}")
+            self.log_test("Locations Endpoint - Exception", False, f"Error: {str(e)}")
+            return False
             
     def test_search_suggestions_endpoint(self):
         """Test search suggestions endpoint"""
