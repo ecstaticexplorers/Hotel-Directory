@@ -69,13 +69,23 @@ export default function HomeScreen() {
         ...(query && { search: query })
       });
 
-      const response = await fetch(`${API_BASE_URL}/api/properties?${params}`);
+      const apiUrl = `${API_BASE_URL}/api/properties?${params}`;
+      console.log('API URL being used:', apiUrl);
+      console.log('API_BASE_URL:', API_BASE_URL);
+
+      const response = await fetch(apiUrl);
+      
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
       
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Response error:', errorText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data: APIResponse = await response.json();
+      console.log('Response data:', data);
       
       if (pageNum === 1) {
         setProperties(data.properties);
