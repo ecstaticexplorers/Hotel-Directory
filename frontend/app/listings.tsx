@@ -281,7 +281,13 @@ export default function ListingScreen() {
               {/* Main Location Node */}
               <TouchableOpacity
                 style={styles.mainLocationNode}
-                onPress={() => toggleSection(`location_${loc.location}`)}
+                onPress={() => {
+                  const key = `location_${loc.location}`;
+                  setExpandedSections(prev => ({
+                    ...prev,
+                    [key]: !prev[key]
+                  }));
+                }}
               >
                 <Text style={styles.mainLocationText}>
                   {loc.location} & Offbeat ({loc.count})
