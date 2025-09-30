@@ -98,7 +98,6 @@ export default function ListingScreen() {
       const response = await fetch(`${API_BASE_URL}/api/locations`);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data: LocationStat[] = await response.json();
-      console.log('Fetched locations:', data);
       setLocations(data);
     } catch (error) {
       console.error('Error fetching locations:', error);
