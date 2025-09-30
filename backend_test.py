@@ -376,8 +376,101 @@ class StayHuntAPITester:
         except Exception as e:
             self.log_test("Locations Endpoint - Exception", False, f"Error: {str(e)}")
             return False
+    def test_properties_with_location_filter(self):
+        """Test properties endpoint with location filter - SPECIFIC REQUIREMENT"""
+        print("\n🔍 TESTING PROPERTIES WITH LOCATION FILTER")
+        try:
+            # Test with a known location
+            test_location = "Darjeeling"
+            start_time = time.time()
+            response = self.session.get(f"{self.base_url}/properties?location={test_location}&per_page=10")
+            response_time = time.time() - start_time
             
-    def test_search_suggestions_endpoint(self):
+            if response.status_code == 200:
+                self.log_test("Properties Location Filter - API Call", True, f"Returns 200 OK for location: {test_location}", response_time)
+                
+                data = response.json()
+                properties = data.get("properties", [])
+                
+                if properties:
+                    # Verify all properties match the location filter
+                    location_matches = []
+                    for prop in properties:
+                        prop_location = prop.get("location", "").lower()
+                        if test_location.lower() in prop_location:
+                            location_matches.append(True)
+                        else:
+                            location_matches.append(False)
+                    
+                    if all(location_matches):
+                        self.log_test("Properties Location Filter - Results", True, f"All {len(properties)} properties match location filter", response_time)
+                    else:
+                        mismatched = len([m for m in location_matches if not m])
+                        self.log_test("Properties Location Filter - Results", False, f"{mismatched} properties don't match location filter", response_time)
+                else:
+                    self.log_test("Properties Location Filter - Results", False, f"No properties found for location: {test_location}", response_time)
+            else:
+                self.log_test("Properties Location Filter - API Call", False, f"HTTP {response.status_code}: {response.text[:200]}", response_time)
+                
+        except Exception as e:
+            self.log_test("Properties Location Filter - Exception", False, f"Error: {str(e)}")
+            
+    def test_properties_sorting_reviews_desc(self):
+        """Test properties sorting by reviews_desc - SPECIFIC REQUIREMENT"""
+        print("\n📈 TESTING PROPERTIES SORTING BY REVIEWS_DESC")
+        try:
+            start_time = time.time()
+            response = self.session.get(f"{self.base_url}/properties?sort_by=reviews_desc&per_page=10")
+            response_time = time.time() - start_time
+            
+            if response.status_code == 200:
+                self.log_test("Properties Reviews Sort - API Call", True, "Returns 200 OK for reviews_desc sort", response_time)
+                
+                data = response.json()
+                properties = data.get("properties", [])
+                
+                if len(properties) >= 2:
+                    # Check if properties are sorted by number_of_reviews descending, then by google_rating descending
+                    is_sorted = True
+                    sort_errors = []
+                    
+                    for i in range(len(properties) - 1):
+                        current = properties[i]
+                        next_prop = properties[i + 1]
+                        
+                        current_reviews = current.get('number_of_reviews', 0)
+                        next_reviews = next_prop.get('number_of_reviews', 0)
+                        current_rating = current.get('google_rating', 0)
+                        next_rating = next_prop.get('google_rating', 0)
+                        
+                        # Primary sort: number_of_reviews descending
+                        if current_reviews < next_reviews:
+                            is_sorted = False
+                            sort_errors.append(f"Position {i}: reviews {current_reviews} < {next_reviews}")
+                            break
+                        # Secondary sort: if reviews are equal, google_rating descending
+                        elif current_reviews == next_reviews and current_rating < next_rating:
+                            is_sorted = False
+                            sort_errors.append(f"Position {i}: same reviews ({current_reviews}) but rating {current_rating} < {next_rating}")
+                            break
+                    
+                    if is_sorted:
+                        self.log_test("Properties Reviews Sort - Sorting Verification", True, "Properties correctly sorted by reviews_desc", response_time)
+                        
+                        # Show sample sorting
+                        print(f"\n📊 SAMPLE SORTING (reviews_desc):")
+                        for i, prop in enumerate(properties[:5]):
+                            print(f"{i+1}. {prop.get('homestay_name', 'N/A')[:30]} - Reviews: {prop.get('number_of_reviews', 0)}, Rating: {prop.get('google_rating', 0)}")
+                    else:
+                        self.log_test("Properties Reviews Sort - Sorting Verification", False, f"Sorting error: {sort_errors[0] if sort_errors else 'Unknown'}", response_time)
+                else:
+                    self.log_test("Properties Reviews Sort - Sorting Verification", True, "Not enough properties to verify sorting", response_time)
+                    
+            else:
+                self.log_test("Properties Reviews Sort - API Call", False, f"HTTP {response.status_code}: {response.text[:200]}", response_time)
+                
+        except Exception as e:
+            self.log_test("Properties Reviews Sort - Exception", False, f"Error: {str(e)}")
         """Test search suggestions endpoint"""
         try:
             start_time = time.time()
