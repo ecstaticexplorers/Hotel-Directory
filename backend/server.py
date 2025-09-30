@@ -163,64 +163,40 @@ async def get_property(property_id: str):
 @app.get("/api/locations", response_model=List[LocationStats])
 async def get_locations():
     try:
+        # Simple aggregation to get location stats
         pipeline = [
             {
                 "$group": {
-                    "_id": "$location",
-                    "count": {"$sum": 1},
+                    "_id": {
+                        "location": "$location",
+                        "sub_location": "$sub_location"
+                    },
+                    "count": {"$sum": 1}
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$_id.location",
+                    "total_count": {"$sum": "$count"},
                     "sub_locations": {
                         "$push": {
-                            "sub_location": "$sub_location",
-                            "count": 1
+                            "sub_location": "$_id.sub_location",
+                            "count": "$count"
                         }
                     }
                 }
             },
             {
                 "$project": {
+                    "_id": 0,
                     "location": "$_id",
-                    "count": 1,
+                    "count": "$total_count",
                     "sub_locations": {
-                        "$reduce": {
+                        "$map": {
                             "input": "$sub_locations",
-                            "initialValue": [],
+                            "as": "sub",
                             "in": {
-                                "$let": {
-                                    "vars": {
-                                        "existing": {
-                                            "$filter": {
-                                                "input": "$$value",
-                                                "cond": {"$eq": ["$$this.sub_location", "$$item.sub_location"]}
-                                            }
-                                        }
-                                    },
-                                    "in": {
-                                        "$cond": {
-                                            "if": {"$gt": [{"$size": "$$existing"}, 0]},
-                                            "then": {
-                                                "$map": {
-                                                    "input": "$$value",
-                                                    "in": {
-                                                        "$cond": {
-                                                            "if": {"$eq": ["$$this.sub_location", "$$item.sub_location"]},
-                                                            "then": {
-                                                                "sub_location": "$$this.sub_location",
-                                                                "count": {"$add": ["$$this.count", "$$item.count"]}
-                                                            },
-                                                            "else": "$$this"
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            "else": {
-                                                "$concatArrays": [
-                                                    "$$value",
-                                                    [{"sub_location": "$$item.sub_location", "count": "$$item.count"}]
-                                                ]
-                                            }
-                                        }
-                                    }
-                                }
+                                "$$sub.sub_location": "$$sub.count"
                             }
                         }
                     }
@@ -233,11 +209,9 @@ async def get_locations():
         
         result = []
         for loc in locations:
-            # Convert sub_locations to dict format
-            sub_locations = []
-            for sub_loc in loc["sub_locations"]:
-                sub_locations.append({sub_loc["sub_location"]: sub_loc["count"]})
-                
+            # Convert sub_locations to the expected format
+            sub_locations = loc.get("sub_locations", [])
+            
             result.append(LocationStats(
                 location=loc["location"],
                 count=loc["count"],
