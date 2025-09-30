@@ -74,11 +74,14 @@ export default function ListingScreen() {
   const [total, setTotal] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
   
-  // Filter states
+  const router = useRouter();
+  const params = useLocalSearchParams();
+  
+  // Filter states - initialize from URL parameters
   const [filters, setFilters] = useState<FilterState>({
     search: '',
-    location: '',
-    sub_location: '',
+    location: (params.location as string) || '',
+    sub_location: (params.sub_location as string) || '',
     category: '',
     min_rating: null,
     sort_by: 'reviews_desc'
