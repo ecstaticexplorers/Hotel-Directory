@@ -123,12 +123,10 @@ export default function LocationDetailScreen() {
       });
 
       const apiUrl = `${API_BASE_URL}/api/properties?${params}`;
-      console.log('Fetching properties from:', apiUrl);
-      console.log('Location name:', locationName);
-      console.log('Sub location:', subLocation);
+      console.log('=== FETCHING PROPERTIES ===');
+      console.log('API URL:', apiUrl);
 
       const response = await fetch(apiUrl);
-      
       console.log('Response status:', response.status);
       
       if (!response.ok) {
@@ -136,7 +134,11 @@ export default function LocationDetailScreen() {
       }
       
       const data: APIResponse = await response.json();
-      console.log('Properties data received:', data);
+      console.log('Properties response:', {
+        total: data.total,
+        propertiesCount: data.properties.length,
+        firstProperty: data.properties[0]?.homestay_name
+      });
       
       if (pageNum === 1) {
         setProperties(data.properties);
@@ -148,7 +150,7 @@ export default function LocationDetailScreen() {
       setHasMore(pageNum < data.total_pages);
       
     } catch (error) {
-      console.error('Error fetching properties:', error);
+      console.error('ERROR fetching properties:', error);
       Alert.alert('Error', 'Failed to load properties. Please try again.');
     } finally {
       setLoading(false);
