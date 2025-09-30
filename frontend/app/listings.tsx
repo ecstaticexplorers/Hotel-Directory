@@ -293,7 +293,7 @@ export default function ListingScreen() {
                   }}
                 >
                   <Text style={styles.mainLocationText}>
-                    {loc.location} & Offbeat ({loc.count})
+                    {loc.location} ({loc.count})
                   </Text>
                   <Ionicons
                     name={expandedSections[`location_${loc.location}`] ? "chevron-up" : "chevron-down"}
