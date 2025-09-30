@@ -150,9 +150,15 @@ export default function LocationDetailScreen() {
   useEffect(() => {
     if (locationName) {
       fetchLocationData();
+      fetchProperties(1, ''); // Initial load without sub-location filter
+    }
+  }, [locationName]);
+
+  useEffect(() => {
+    if (locationName && selectedSubLocation !== '') {
       fetchProperties(1, selectedSubLocation);
     }
-  }, [locationName, selectedSubLocation]);
+  }, [selectedSubLocation]);
 
   const toggleSubLocation = (index: number) => {
     setSubLocations(prev => prev.map((item, i) => 
