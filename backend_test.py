@@ -518,19 +518,24 @@ class StayHuntAPITester:
             self.log_test("Performance Test", False, f"Error: {str(e)}")
             
     def run_all_tests(self):
-        """Run all tests"""
-        print(f"🚀 Starting StayHunt Backend API Tests")
+        """Run all tests with focus on locations endpoint"""
+        print(f"🚀 Starting StayHunt Backend API Tests - LOCATIONS ENDPOINT FOCUS")
         print(f"📍 Testing against: {self.base_url}")
         print("=" * 80)
         
-        # Run tests in order
+        # Run tests in order - prioritizing locations endpoint testing
         if self.test_api_health():
+            # PRIMARY FOCUS TESTS
+            self.test_locations_endpoint()  # Main focus - updated locations endpoint
+            self.test_properties_with_location_filter()  # Test location filtering
+            self.test_properties_sorting_reviews_desc()  # Test reviews_desc sorting
+            
+            # SECONDARY TESTS
             self.test_properties_endpoint_basic()
             self.test_properties_pagination()
             self.test_search_functionality()
             self.test_sorting_functionality()
             self.test_individual_property_endpoint()
-            self.test_locations_endpoint()
             self.test_search_suggestions_endpoint()
             self.test_performance()
         else:
@@ -538,7 +543,7 @@ class StayHuntAPITester:
             
         # Print summary
         print("\n" + "=" * 80)
-        print("📊 TEST SUMMARY")
+        print("📊 TEST SUMMARY - LOCATIONS ENDPOINT FOCUS")
         print("=" * 80)
         
         passed = sum(1 for result in self.test_results if "✅" in result["status"])
@@ -549,8 +554,17 @@ class StayHuntAPITester:
         print(f"Failed: {failed}")
         print(f"Success Rate: {(passed/len(self.test_results)*100):.1f}%")
         
+        # Highlight primary focus results
+        print("\n🎯 PRIMARY FOCUS RESULTS:")
+        focus_tests = ["Locations Endpoint", "Properties Location Filter", "Properties Reviews Sort"]
+        for result in self.test_results:
+            for focus in focus_tests:
+                if focus in result["test"]:
+                    print(f"  {result['status']} {result['test']}: {result['message']}")
+                    break
+        
         if failed > 0:
-            print("\n❌ FAILED TESTS:")
+            print("\n❌ ALL FAILED TESTS:")
             for result in self.test_results:
                 if "❌" in result["status"]:
                     print(f"  • {result['test']}: {result['message']}")
