@@ -694,6 +694,11 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 8,
   },
+  showMoreText: {
+    fontSize: 13,
+    color: '#4CAF50',
+    fontWeight: '500',
+  },
   filterOption: {
     paddingVertical: 8,
     paddingHorizontal: 12,
