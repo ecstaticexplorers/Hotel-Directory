@@ -219,13 +219,18 @@ async def get_locations():
         
         result = []
         for loc in locations:
-            # Convert sub_locations to the expected format
-            sub_locations = loc.get("sub_locations", [])
+            # Convert sub_locations object back to list of dicts format
+            sub_locations_obj = loc.get("sub_locations", {})
+            sub_locations_list = []
+            
+            # Convert object to list of single-key dictionaries
+            for sub_location_name, count in sub_locations_obj.items():
+                sub_locations_list.append({sub_location_name: count})
             
             result.append(LocationStats(
                 location=loc["location"],
                 count=loc["count"],
-                sub_locations=sub_locations
+                sub_locations=sub_locations_list
             ))
             
         return result
