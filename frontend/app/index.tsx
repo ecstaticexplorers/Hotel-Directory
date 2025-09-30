@@ -252,7 +252,7 @@ export default function HomeScreen() {
       <FlatList
         data={filteredLocations}
         keyExtractor={(item) => item.location}
-        renderItem={renderLocationCard}
+        renderItem={renderLocationTree}
         ListEmptyComponent={renderEmpty}
         refreshControl={
           <RefreshControl
@@ -263,8 +263,8 @@ export default function HomeScreen() {
           />
         }
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={filteredLocations.length === 0 ? styles.emptyContainer : styles.listContainer}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        contentContainerStyle={filteredLocations.length === 0 ? styles.emptyContainer : styles.treeContainer}
+        ItemSeparatorComponent={() => <View style={styles.treeSeparator} />}
       />
     </SafeAreaView>
   );
