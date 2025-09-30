@@ -62,7 +62,7 @@ interface FilterState {
   sort_by: string;
 }
 
-const API_BASE_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'http://localhost:8001';
+const API_BASE_URL = process.env.EXPO_PUBLIC_BACKEND_URL || '';
 
 export default function ListingScreen() {
   const [properties, setProperties] = useState<Property[]>([]);
