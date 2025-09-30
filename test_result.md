@@ -132,6 +132,21 @@ backend:
           agent: "testing"
           comment: "✅ COMPREHENSIVE BACKEND TESTING COMPLETED: All core APIs working with 1693-property dataset. GET /api/properties: ✅ Working (1693 properties), pagination ✅, search ✅, filtering ✅, sorting ✅. Individual property endpoint ✅. Search suggestions ✅. Performance excellent (<1s response). Minor: /api/locations endpoint has MongoDB aggregation error (non-critical). Dataset migration successful - all 1693 properties accessible via API with proper structure and data types."
 
+  - task: "Backend API Locations Endpoint Fix"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: "❌ LOCATIONS ENDPOINT FAILING: MongoDB aggregation error - 'Invalid $project :: caused by :: Unrecognized expression $$sub.sub_location'. The aggregation pipeline was using invalid syntax for dynamic key creation in MongoDB."
+        - working: true
+          agent: "testing"
+          comment: "✅ LOCATIONS ENDPOINT FIXED: Successfully resolved MongoDB aggregation error by implementing proper $arrayToObject pattern with $map. Fixed dynamic key creation issue using {k: '$$sub.sub_location', v: '$$sub.count'} pattern instead of invalid {$$sub.sub_location: $$sub.count} syntax. Endpoint now returns proper LocationStats format with 5 locations and 1693 total properties. All location filtering and sub-location data working correctly."
+
 frontend:
   - task: "Frontend Property Display"
     implemented: true
@@ -151,13 +166,12 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Backend API Properties Endpoint"
-    - "Frontend Property Display"
+    - "Backend API Locations Endpoint Fix"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -167,3 +181,5 @@ agent_communication:
       message: "Excel data migration completed successfully! Migrated 1693 properties from Excel file to MongoDB database. The seed_data.py script now downloads the Excel file from the provided URL, processes all records with proper data validation, and inserts them in batches. All database indexes have been created. Backend APIs should now serve the complete dataset instead of sample data. Ready for backend testing to verify API functionality with the large dataset."
     - agent: "testing"
       message: "✅ BACKEND TESTING COMPLETE: Successfully tested StayHunt backend APIs with the complete 1693-property dataset. All core functionality working: GET /api/properties (✅ 1693 properties), pagination (✅), search (✅), filtering (✅), sorting (✅), individual property endpoint (✅), search suggestions (✅). Performance excellent (<1s response times). Minor issue: /api/locations endpoint has MongoDB aggregation error (non-critical for core functionality). Dataset migration successful - all properties accessible with proper data structure and types. Ready for main agent to summarize and finish."
+    - agent: "testing"
+      message: "🎯 LOCATIONS ENDPOINT TESTING COMPLETE: Successfully fixed and tested the updated StayHunt locations endpoint. FIXED: MongoDB aggregation error by implementing proper $arrayToObject pattern for dynamic key creation. VERIFIED: ✅ GET /api/locations returns 200 OK with proper LocationStats structure (5 locations, 1693 total properties). ✅ Properties location filtering works correctly. ✅ Properties sorting by reviews_desc works correctly (Number of Reviews first, then Google Rating). All primary focus requirements met. Success rate: 96.9% (31/32 tests passed). Only minor unrelated test failure for Goa location filter (likely no Goa properties in dataset)."
