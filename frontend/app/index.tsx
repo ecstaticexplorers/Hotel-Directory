@@ -357,75 +357,89 @@ const styles = StyleSheet.create({
     color: '#666',
     fontWeight: '500',
   },
-  listContainer: {
+  treeContainer: {
     paddingHorizontal: 16,
+    paddingVertical: 8,
   },
-  locationCard: {
-    position: 'relative',
+  treeSeparator: {
+    height: 8,
+  },
+  locationTreeNode: {
     backgroundColor: 'white',
-    borderRadius: 16,
-    marginVertical: 8,
+    borderRadius: 12,
+    marginVertical: 4,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     overflow: 'hidden',
   },
-  locationCardContent: {
+  mainLocationNode: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  locationNodeContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
-    zIndex: 1,
   },
-  cardShadow: {
-    position: 'absolute',
-    top: 4,
-    left: 4,
-    right: -4,
-    bottom: -4,
-    backgroundColor: 'rgba(0, 122, 255, 0.1)',
-    borderRadius: 16,
-    zIndex: -1,
+  locationNodeIcon: {
+    marginRight: 12,
   },
-  locationIcon: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#e3f2fd',
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-    elevation: 2,
-    shadowColor: '#007AFF',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-  },
-  locationInfo: {
+  locationNodeInfo: {
     flex: 1,
   },
-  locationName: {
-    fontSize: 20,
+  locationNodeName: {
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 8,
+    marginBottom: 2,
   },
-  statsRow: {
+  locationNodeStats: {
+    fontSize: 14,
+    color: '#666',
+  },
+  subLocationsList: {
+    borderTopWidth: 1,
+    borderTopColor: '#f0f0f0',
+    backgroundColor: '#fafafa',
+  },
+  subLocationNode: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingLeft: 32,
+    paddingRight: 16,
   },
-  statItem: {
+  subLocationLine: {
+    position: 'absolute',
+    left: 20,
+    top: 0,
+    bottom: 0,
+    width: 1,
+    backgroundColor: '#e0e0e0',
+  },
+  subLocationContent: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
   },
-  statText: {
+  subLocationIcon: {
+    marginRight: 8,
+  },
+  subLocationName: {
     fontSize: 14,
-    color: '#666',
-    marginLeft: 6,
+    color: '#555',
+  },
+  showMoreButton: {
+    paddingVertical: 10,
+    paddingLeft: 32,
+    paddingRight: 16,
+  },
+  showMoreText: {
+    fontSize: 14,
+    color: '#007AFF',
     fontWeight: '500',
-  },
-  arrowContainer: {
-    padding: 4,
-  },
-  separator: {
-    height: 4,
   },
   centerContainer: {
     flex: 1,
