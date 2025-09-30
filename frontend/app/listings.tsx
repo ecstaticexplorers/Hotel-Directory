@@ -277,8 +277,10 @@ export default function ListingScreen() {
       
       {expandedSections.location && (
         <View style={styles.filterOptions}>
+          {console.log('Rendering locations:', locations.length)}
           {locations.map((loc) => (
             <View key={loc.location}>
+              {console.log('Rendering location:', loc.location, 'with', loc.sub_locations.length, 'sub-locations')}
               {/* Main Location Node */}
               <TouchableOpacity
                 style={styles.mainLocationNode}
