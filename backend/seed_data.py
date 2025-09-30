@@ -85,14 +85,35 @@ async def seed_database():
     db = client.stayhunt
     
     try:
+        # Load properties from Excel file
+        properties = load_properties_from_excel()
+        
+        if not properties:
+            print("No valid properties found in Excel file!")
+            return
+        
         # Clear existing data
         print("Clearing existing properties...")
-        await db.properties.delete_many({})
+        delete_result = await db.properties.delete_many({})
+        print(f"Deleted {delete_result.deleted_count} existing properties")
         
-        # Insert sample data
-        print("Inserting sample properties...")
-        result = await db.properties.insert_many(sample_properties)
-        print(f"Successfully inserted {len(result.inserted_ids)} properties")
+        # Insert properties in batches to handle large datasets
+        batch_size = 100
+        total_inserted = 0
+        
+        print(f"Inserting {len(properties)} properties in batches of {batch_size}...")
+        
+        for i in range(0, len(properties), batch_size):
+            batch = properties[i:i + batch_size]
+            try:
+                result = await db.properties.insert_many(batch)
+                total_inserted += len(result.inserted_ids)
+                print(f"Inserted batch {i//batch_size + 1}: {len(result.inserted_ids)} properties (Total: {total_inserted})")
+            except Exception as e:
+                print(f"Error inserting batch {i//batch_size + 1}: {e}")
+                continue
+        
+        print(f"Successfully inserted {total_inserted} properties")
         
         # Create indexes for better performance
         print("Creating indexes...")
@@ -108,9 +129,12 @@ async def seed_database():
         ])
         
         print("Database seeding completed successfully!")
+        print(f"Total properties in database: {await db.properties.count_documents({})}")
         
     except Exception as e:
         print(f"Error seeding database: {e}")
+        import traceback
+        traceback.print_exc()
     finally:
         client.close()
 
